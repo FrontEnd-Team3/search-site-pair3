@@ -4,7 +4,6 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { useWordList } from "context/targetwords";
-import debounce from "lodash.debounce";
 
 const SearchBar = () => {
 	const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -24,11 +23,11 @@ const SearchBar = () => {
 	const { targetWords, setTargetWords } = useWordList();
 	const handleTargetWords = e => {
 		e.preventDefault();
-		// 검색 값 있을 때만
+		// Only when there is a search value
 		if (inputData) {
 			const newTargetWords = [...targetWords];
 			newTargetWords.unshift(inputData);
-			// 최근 검색어 배열 관리
+			// Manage recent search word array
 			if (newTargetWords.length >= 5) {
 				setTargetWords(newTargetWords.slice(0, 5));
 			} else {
@@ -36,7 +35,6 @@ const SearchBar = () => {
 			}
 		}
 		setInputData("");
-		setText("");
 	};
 
 	// 검색 기록 배열 확인용
@@ -49,7 +47,7 @@ const SearchBar = () => {
 
 	// 최근 검색어 개별 삭제
 	const handleDeleteEachWord = target => {
-		const newTargetWords = [...targetWords].filter(word => word !== target);
+		const newTargetWords = targetWords.filter(word => word !== target);
 		setTargetWords(newTargetWords);
 	};
 
@@ -58,32 +56,34 @@ const SearchBar = () => {
 		setTargetWords([]);
 	};
 
-	// DbBounce 기능 구현
-	const [searchText, setSearchText] = useState("");
-	let timer;
+	// Debounce 기능
+	const debounce = (func, delay) => {
+		let timeoutId;
+		return function (...args) {
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
+			timeoutId = setTimeout(() => {
+				func.apply(this, args);
+			}, delay);
+		};
+	};
 
-	const handleInputChange = debounce(e => {
-		if (timer) {
-			clearTimeout(timer);
-		}
-		setSearchText(e.target.value); // 검색 텍스트 업데이트
-		timer = setTimeout(() => {
-			console.log("여기에 ajax 요청", e.target.value);
-		});
-	}, 200);
+	// Debounced version of handleInputData
+	const handleDebouncedInputData = debounce(handleInputData, 300);
 
 	return (
 		<>
 			<S.Container>
 				<form name="value">
 					<input
-						placeholder="SEARCH..."
+						placeholder="SEARCH"
 						onClick={() => setIsHistoryOpen(true)}
-						onChange={(handleInputChange, handleInputData)}
-						value={text}
+						onChange={handleInputData}
+						value={inputData} // Updated to inputData
 					/>
 					<IoIosCloseCircle
-						className="close-icon"
+						className="close icon"
 						onClick={handleCloseHistory}
 					/>
 					<button onClick={handleTargetWords}>
@@ -98,7 +98,7 @@ const SearchBar = () => {
 						<span className="deleteAll" onClick={handleDeleteEveryWord}>
 							전체 삭제
 						</span>
-					</div>{" "}
+					</div>
 					<hr />
 					<ul>
 						{targetWords.map((word, i) => (
