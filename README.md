@@ -10,14 +10,12 @@ Vercel과 Glitch를 통해 프론트엔드 코드와 백엔드 코드를 따로 
 
 
 ## 📌 배포 링크
-- FRONT-END
-: https://search-site-pair3-xayg-git-refactoring-pair2.vercel.app/
-- BACK-END
-: https://cloudy-stone-juice.glitch.me/
+- [FRONT-END](https://search-site-pair3-xayg-git-refactoring-pair2.vercel.app/)
+- [BACK-END](https://cloudy-stone-juice.glitch.me/)
 
 ## 📋 프로젝트 기록
 프로젝트 구현 일지 및 API 최적화 방법, CORS 에러에 대해 공부한 후 작성하였습니다. <br/>
-https://gentle-tin-2c4.notion.site/3-7f96b641febc4d36b1c2d365ca724406?pvs=4
+- [노션](https://gentle-tin-2c4.notion.site/3-7f96b641febc4d36b1c2d365ca724406?pvs=4)
 
 ## 🗂️ 폴더 구조
 <details>
